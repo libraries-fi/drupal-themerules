@@ -28,7 +28,8 @@ class ThemeNegotiator implements ThemeNegotiatorInterface {
   private function matchingOverride(Request $request) {
     $host = Drupal::request()->getHost();
     $path = Drupal::request()->getRequestUri();
-    if (substr($path, 6) === '/admin') {
+
+    if (substr($path, 0, 6) === '/admin') {
       return null;
     }
     foreach ($this->cache() as $override) {
