@@ -1,0 +1,7 @@
+name: Theme Rules
+type: module
+package: Kirjastot.fi
+description: Define alternative themes to be used on pages
+core: 8.x
+dependencies: {}
+configure: entity.theme_override.collection

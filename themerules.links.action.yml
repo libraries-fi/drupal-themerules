@@ -1,0 +1,5 @@
+themerules.add_override:
+  route_name: entity.theme_override.add_form
+  title: 'New override'
+  appears_on:
+    - entity.theme_override.collection

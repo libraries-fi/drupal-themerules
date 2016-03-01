@@ -1,0 +1,34 @@
+themerules.admin:
+  path: /admin/themerules
+  defaults:
+    _form: Drupal\themerules\Form\SettingsForm
+  requirements:
+    _permission: 'administer themes'
+
+entity.theme_override.add_form:
+  path: /admin/themerules/add
+  defaults:
+    _entity_form: theme_override.add
+  requirements:
+    _permission: 'administer themes'
+
+entity.theme_override.edit_form:
+  path: /admin/themerules/{theme_override}/edit
+  defaults:
+    _entity_form: theme_override.edit
+  requirements:
+    _permission: 'administer themes'
+
+entity.theme_override.delete_form:
+  path: /admin/themerules/{theme_override}/delete
+  defaults:
+    _entity_form: theme_override.delete
+  requirements:
+    _permission: 'administer themes'
+
+entity.theme_override.collection:
+  path: /admin/themerules
+  defaults:
+    _entity_list: theme_override
+  requirements:
+    _permission: 'administer themes'
