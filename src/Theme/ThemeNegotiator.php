@@ -37,7 +37,7 @@ class ThemeNegotiator implements ThemeNegotiatorInterface {
         return $override;
       }
       foreach ($override->getPaths() as $rule_path) {
-        if (substr($rule_path, 0, strlen($path)) === $path) {
+        if (substr($path, 0, strlen($rule_path)) === $rule_path) {
           return $override;
         }
       }
