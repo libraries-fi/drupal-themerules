@@ -94,8 +94,8 @@ class OverrideEditForm extends EntityForm implements ContainerInjectionInterface
   }
 
   public function save(array $form, FormStateInterface $form_state) {
-    $this->entity->setDomains(array_filter(explode(PHP_EOL, trim($form_state->getValue('domains')))));
-    $this->entity->setPaths(array_filter(explode(PHP_EOL, trim($form_state->getValue('paths')))));
+    $this->entity->setDomains(array_filter(array_map('trim', explode(PHP_EOL, $form_state->getValue('domains')))));
+    $this->entity->setPaths(array_filter(array_map('trim', explode(PHP_EOL, $form_state->getValue('paths')))));
     $status = $this->entity->save();
     $form_state->setRedirectUrl($this->entity->urlInfo('collection'));
 
