@@ -9,12 +9,12 @@ use Drupal\Core\Theme\ThemeNegotiatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 class ThemeNegotiator implements ThemeNegotiatorInterface {
-  private $storage;
+  private $entity_manager;
   private $request_stack;
   private $_cache;
 
   public function __construct(EntityTypeManagerInterface $entity_manager, $request_stack) {
-    $this->storage = $entity_manager->getStorage('theme_override');
+    $this->entity_manager = $entity_manager;
     $this->request_stack = $request_stack;
   }
 
@@ -55,7 +55,7 @@ class ThemeNegotiator implements ThemeNegotiatorInterface {
 
   private function cache() {
     if (is_null($this->_cache)) {
-      $this->_cache = $this->storage->loadMultiple();
+      $this->_cache = $this->entity_manager->getStorage('theme_override')->loadMultiple();
     }
     return $this->_cache;
   }
