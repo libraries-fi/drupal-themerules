@@ -3,35 +3,40 @@
 namespace Drupal\themerules\Theme;
 
 use Drupal;
-use Drupal\Core\Entity\EntityManagerInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Theme\ThemeNegotiatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 class ThemeNegotiator implements ThemeNegotiatorInterface {
-  private $entity_manager;
+  private $storage;
+  private $request_stack;
   private $_cache;
 
-  public function __construct(EntityManagerInterface $entity_manager) {
-    $this->entity_manager = $entity_manager;
+  public function __construct(EntityTypeManagerInterface $entity_manager, $request_stack) {
+    $this->storage = $entity_manager->getStorage('theme_override');
+    $this->request_stack = $request_stack;
   }
+
   public function applies(RouteMatchInterface $match) {
-    $override = $this->matchingOverride(Drupal::request());
+    $override = $this->matchingOverride($this->request());
     return $override != null;
   }
+
   public function determineActiveTheme(RouteMatchInterface $match) {
-    if ($override = $this->matchingOverride(Drupal::request())) {
+    if ($override = $this->matchingOverride($this->request())) {
       return $override->getTheme();
     }
   }
 
   private function matchingOverride(Request $request) {
-    $host = Drupal::request()->getHost();
-    $path = Drupal::request()->getRequestUri();
+    $host = $this->request()->getHost();
+    $path = $this->request()->getRequestUri();
 
     if (substr($path, 0, 6) === '/admin') {
       return null;
     }
+
     foreach ($this->cache() as $override) {
       if (in_array($host, $override->getDomains())) {
         return $override;
@@ -44,9 +49,13 @@ class ThemeNegotiator implements ThemeNegotiatorInterface {
     }
   }
 
+  private function request() {
+    return $this->request_stack->getCurrentRequest();
+  }
+
   private function cache() {
     if (is_null($this->_cache)) {
-      $this->_cache = $this->entity_manager->getStorage('theme_override')->loadMultiple();
+      $this->_cache = $this->storage->loadMultiple();
     }
     return $this->_cache;
   }

@@ -1,6 +1,6 @@
 services:
   theme.negotiator.themerules:
     class: Drupal\themerules\Theme\ThemeNegotiator
-    arguments: ['@entity.manager']
+    arguments: ['@entity_type.manager', '@request_stack']
     tags:
       - { name: theme_negotiator }
