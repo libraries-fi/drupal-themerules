@@ -10,6 +10,7 @@ class OverrideListBuilder extends EntityListBuilder {
     $header = [
       // 'id' => $this->t('ID'),
       'label' => $this->t('Name'),
+      'weight' => $this->t('Weight'),
     ];
     return $header + parent::buildHeader();
   }
@@ -18,6 +19,7 @@ class OverrideListBuilder extends EntityListBuilder {
     $row = [
       // 'id' => $template->id(),
       'label' => $template->label(),
+      'weight' => $template->getWeight(),
     ];
     return $row + parent::buildRow($template);
   }

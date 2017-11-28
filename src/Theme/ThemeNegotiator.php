@@ -20,7 +20,7 @@ class ThemeNegotiator implements ThemeNegotiatorInterface {
 
   public function applies(RouteMatchInterface $match) {
     $override = $this->matchingOverride($this->request());
-    return $override != null;
+    return $override != NULL;
   }
 
   public function determineActiveTheme(RouteMatchInterface $match) {
@@ -33,20 +33,22 @@ class ThemeNegotiator implements ThemeNegotiatorInterface {
     $host = $this->request()->getHost();
     $path = $this->request()->getRequestUri();
 
-    if (substr($path, 0, 6) === '/admin') {
-      return null;
-    }
+    // if (substr($path, 0, 6) === '/admin') {
+    //   return NULL;
+    // }
 
     foreach ($this->cache() as $override) {
       if (in_array($host, $override->getDomains())) {
         return $override;
       }
       foreach ($override->getPaths() as $rule_path) {
-        if (substr($path, 0, strlen($rule_path)) === $rule_path) {
+        if (mb_substr($path, 0, mb_strlen($rule_path)) === $rule_path) {
           return $override;
         }
       }
     }
+
+    return NULL;
   }
 
   private function request() {
@@ -56,6 +58,13 @@ class ThemeNegotiator implements ThemeNegotiatorInterface {
   private function cache() {
     if (is_null($this->_cache)) {
       $this->_cache = $this->entity_manager->getStorage('theme_override')->loadMultiple();
+
+      usort($this->_cache, function($a, $b) {
+        if ($a->getWeight() != $b->getWeight()) {
+          return $a->getWeight() - $b->getWeight();
+        }
+        return strcasecmp($a->id(), $b->id());
+      });
     }
     return $this->_cache;
   }

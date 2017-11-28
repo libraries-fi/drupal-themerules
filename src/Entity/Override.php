@@ -35,7 +35,8 @@ use Drupal\Core\Config\Entity\ConfigEntityBase;
  *     "label",
  *     "theme",
  *     "domains",
- *     "paths"
+ *     "paths",
+ *     "weight"
  *   }
  * )
  */
@@ -45,6 +46,7 @@ class Override extends ConfigEntityBase {
   protected $theme;
   protected $domains = [];
   protected $paths = [];
+  protected $weight = 0;
 
   public function getTheme() {
     return $this->theme;
@@ -68,5 +70,13 @@ class Override extends ConfigEntityBase {
 
   public function setPaths(array $paths) {
     $this->paths = $paths;
+  }
+
+  public function getWeight() {
+    return $this->weight;
+  }
+
+  public function setWeight($weight) {
+    $this->weight = (int)$weight;
   }
 }
