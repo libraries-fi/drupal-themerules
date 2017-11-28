@@ -56,7 +56,6 @@ class OverrideEditForm extends EntityForm implements ContainerInjectionInterface
       '#default_value' => $this->entity->id(),
     ];
 
-
     $form['theme'] = [
       '#type' => 'select',
       '#title' => $this->t('Theme'),
@@ -88,6 +87,11 @@ class OverrideEditForm extends EntityForm implements ContainerInjectionInterface
         '#default_value' => implode(PHP_EOL, $this->entity->getPaths()),
         '#rows' => 10,
       ]
+    ];
+
+    $form['weight'] = [
+      '#type' => 'weight',
+      '#title' => $this->t('Weight'),
     ];
 
     return $form;
