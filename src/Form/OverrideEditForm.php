@@ -92,6 +92,7 @@ class OverrideEditForm extends EntityForm implements ContainerInjectionInterface
     $form['weight'] = [
       '#type' => 'weight',
       '#title' => $this->t('Weight'),
+      '#default_value' => $this->entity->getWeight(),
     ];
 
     return $form;
