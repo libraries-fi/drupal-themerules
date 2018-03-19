@@ -1,0 +1,6 @@
+{
+  "name": "libraries-fi/themerules",
+  "description": "Configurable rules for selecting a theme for a page.",
+  "type": "drupal-module",
+  "license": "GPL-2.0+"
+}
