@@ -33,11 +33,9 @@ class OverrideEditForm extends EntityForm implements ContainerInjectionInterface
   public function form(array $form, FormStateInterface $form_state) {
     $form = parent::form($form, $form_state);
 
-    $list = array_filter($this->themes->listInfo(), function($info) {
-      return empty($info->info['hidden']);
-    });
+    $list = array_filter($this->themes->listInfo(), fn($info) => empty($info->info['hidden']));
 
-    $names = array_map(function($info) { return $info->info['name']; }, $list);
+    $names = array_map(fn($info) => $info->info['name'], $list);
     asort($names);
 
     $form['label'] = [
@@ -102,14 +100,14 @@ class OverrideEditForm extends EntityForm implements ContainerInjectionInterface
     $this->entity->setDomains(array_filter(array_map('trim', explode(PHP_EOL, $form_state->getValue('domains')))));
     $this->entity->setPaths(array_filter(array_map('trim', explode(PHP_EOL, $form_state->getValue('paths')))));
     $status = $this->entity->save();
-    $form_state->setRedirectUrl($this->entity->urlInfo('collection'));
+    $form_state->setRedirectUrl($this->entity->toUrl('collection'));
 
     if ($status = SAVED_UPDATED) {
-      drupal_set_message($this->t('Theme override %override has been updated.', [
+      $this->messenger()->addStatus($this->t('Theme override %override has been updated.', [
         '%override' => $this->entity->label(),
       ]));
     } else {
-      drupal_set_message($this->t('Theme override %override has been added.', [
+      $this->messenger()->addStatus($this->t('Theme override %override has been added.', [
         '%override' => $this->entity->label(),
       ]));
     }
