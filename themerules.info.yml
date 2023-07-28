@@ -3,5 +3,6 @@ type: module
 package: Kirjastot.fi
 description: Define alternative themes to be used on pages
 core: 8.x
+core_version_requirement: ^8 || ^9
 dependencies: {}
 configure: entity.theme_override.collection
